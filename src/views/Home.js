@@ -15,6 +15,7 @@ import {
     Stack, Divider, CardFooter, ButtonGroup, Card, CardBody
 } from '@chakra-ui/react';
 import { FaDog, FaBatteryFull } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
     const [currentTime, setCurrentTime] = useState('');
@@ -57,32 +58,34 @@ const Home = () => {
                 </Heading>
             </Box>
             <Box mb={6} p={4} border="1px solid transparent">
-            <Stack direction='row' >
-                <Button colorScheme='teal' variant='ghost'>
-                    <VStack spacing={1}>
-                        <Box boxSize="100px" borderRadius="full" overflow="hidden">
-                            <Image src="./icons/ai-assistant-icon.png" boxSize="100px"/>
-                        </Box>
-                        <Heading as='h4' size='xs'>AI Assistant</Heading>
-                    </VStack>
-                </Button>
-                <Button colorScheme='teal' variant='ghost'>
-                    <VStack spacing={1}>
-                        <Box boxSize="100px" borderRadius="full" overflow="hidden">
-                            <Image src="./icons/hospital-icon.webp" boxSize="100px"/>
-                        </Box>
-                        <Heading as='h4' size='xs'>Hospital</Heading>
-                    </VStack>
-                </Button>
-                <Button colorScheme='teal' variant='ghost'>
-                    <VStack spacing={1}>
-                        <Box boxSize="100px" borderRadius="full" overflow="hidden">
-                            <Image src="./icons/metric-icon.webp" boxSize="100px"/>
-                        </Box>
-                        <Heading as='h4' size='xs'>Health Metrics</Heading>
-                    </VStack>
-                </Button>
-            </Stack>
+                <Stack direction='row' >
+                    <Link to="/assistant">
+                        <Button colorScheme='teal' variant='ghost'>
+                            <VStack spacing={1}>
+                                <Box boxSize="100px" borderRadius="full" overflow="hidden">
+                                    <Image src="./icons/ai-assistant-icon.png" boxSize="100px" />
+                                </Box>
+                                <Heading as='h4' size='xs'>AI Assistant</Heading>
+                            </VStack>
+                        </Button>
+                    </Link>
+                    <Button colorScheme='teal' variant='ghost'>
+                        <VStack spacing={1}>
+                            <Box boxSize="100px" borderRadius="full" overflow="hidden">
+                                <Image src="./icons/hospital-icon.webp" boxSize="100px"/>
+                            </Box>
+                            <Heading as='h4' size='xs'>Hospital</Heading>
+                        </VStack>
+                    </Button>
+                    <Button colorScheme='teal' variant='ghost'>
+                        <VStack spacing={1}>
+                            <Box boxSize="100px" borderRadius="full" overflow="hidden">
+                                <Image src="./icons/metric-icon.webp" boxSize="100px"/>
+                            </Box>
+                            <Heading as='h4' size='xs'>Health Metrics</Heading>
+                        </VStack>
+                    </Button>
+                </Stack>
             </Box>
 
 
