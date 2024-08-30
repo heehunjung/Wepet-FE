@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Flex, Heading, Input, Button, VStack, Text, Stack } from "@chakra-ui/react";
+import { Box, Grid, GridItem, Heading, Input, Button, Text, Stack } from "@chakra-ui/react";
 import { FaBatteryFull, FaDog } from "react-icons/fa";
 
 const Assistant = () => {
@@ -27,8 +27,7 @@ const Assistant = () => {
 
         const newMessage = { user: 'user', text: input };
         setMessages([...messages, newMessage]);
-
-        // API 호출 부분을 주석 처리
+// API 호출 부분을 주석 처리
         /*
         try {
             const response = await axios.post('https://api.openai.com/v1/engines/davinci-codex/completions', {
@@ -50,9 +49,10 @@ const Assistant = () => {
             console.error("Error calling OpenAI API", error);
         }
         */
-
         // 현재는 보고서를 위해 저장된 데이터 출력
-        const gptMessage = { user: 'gpt', text: '강아지의 눈 건강을 위해 추천되는 영양제는 다음과 같습니다:\n' +
+        const gptMessage = {
+            user: 'gpt',
+            text: '강아지의 눈 건강을 위해 추천되는 영양제는 다음과 같습니다:\n' +
                 '\n' +
                 '추천되는 제품들:\n' +
                 '\n' +
@@ -68,62 +68,70 @@ const Assistant = () => {
                 'Ocu-GLO Rx:\n' +
                 '\n' +
                 '루테인, 제아잔틴, 오메가-3 지방산 등을 포함한 눈 건강 전문 영양제입니다.\n' +
-                '이러한 영양제를 선택할 때는 강아지의 특정 필요와 현재 건강 상태를 고려하는 것이 중요합니다. 또한, 새로운 영양제를 시작하기 전에 수의사와 상담하여 안전성과 적절한 용량을 확인하는 것이 좋습니다' };
+                '이러한 영양제를 선택할 때는 강아지의 특정 필요와 현재 건강 상태를 고려하는 것이 중요합니다. 또한, 새로운 영양제를 시작하기 전에 수의사와 상담하여 안전성과 적절한 용량을 확인하는 것이 좋습니다'
+        };
         setMessages([...messages, newMessage, gptMessage]);
 
         setInput('');
     };
+
     return (
-        <>
-            <Flex position="relative" justifyContent="flex-end" flex="1" alignItems="center">
-                <Box mr={4} display="flex" alignItems="center">
+        <Grid templateColumns="repeat(12, 1fr)" gap={4} p={4}>
+            <GridItem colSpan={12}>
+                <Box display="flex" justifyContent="flex-end" alignItems="center">
                     <FaBatteryFull style={{ marginRight: '8px' }} />
                     <Heading as='h4' size='md'>{currentTime}</Heading>
                 </Box>
-            </Flex>
-            <hr />
-
-            <Heading as='h2' size='2xl' display="flex" alignItems="center">
-                <FaDog style={{ marginRight: '8px' }} />
-                Puppy Doc
-            </Heading>
-            <br />
-            <hr />
-
-            <Box mb={6} p={4} border="1px solid transparent">
-                <Heading as='h4' size='md'>
-                    AI 수의사
+            </GridItem>
+            <GridItem colSpan={12}>
+                <Heading as='h2' size='2xl' display="flex" alignItems="center">
+                    <FaDog style={{ marginRight: '8px' }} />
+                    Puppy Doc
                 </Heading>
-            </Box>
-
-            <VStack spacing={4} align="stretch" p={4} border="1px solid #ccc" borderRadius="md">
-                <Box h="300px" overflowY="auto" p={4} border="1px solid #ccc" borderRadius="md">
-                    {messages.map((msg, index) => (
-                        <Stack key={index} direction={msg.user === 'user' ? 'row-reverse' : 'row'} spacing={4} mb={2}>
-                            <Box
-                                bg={msg.user === 'user' ? 'teal.500' : 'gray.300'}
-                                color={msg.user === 'user' ? 'white' : 'black'}
-                                p={2}
-                                borderRadius="md"
-                            >
-                                <Text>{msg.text}</Text>
-                            </Box>
-                        </Stack>
-                    ))}
+            </GridItem>
+            <GridItem colSpan={12}>
+                <Box p={4}>
+                    <Heading as='h4' size='md'>
+                        AI 수의사
+                    </Heading>
                 </Box>
+            </GridItem>
 
-                <Flex>
-                    <Input
-                        value={input}
-                        onChange={(e) => setInput(e.target.value)}
-                        placeholder="메시지를 입력하세요..."
-                        mr={2}
-                    />
-                    <Button onClick={sendMessage} colorScheme="teal">전송</Button>
-                </Flex>
-            </VStack>
-        </>
+            <GridItem colSpan={12}>
+                <Box border="1px solid #ccc" borderRadius="md" p={4}>
+                    <Box h="300px" overflowY="auto" p={4} border="1px solid #ccc" borderRadius="md">
+                        {messages.map((msg, index) => (
+                            <Stack key={index} direction={msg.user === 'user' ? 'row-reverse' : 'row'} spacing={4} mb={2}>
+                                <Box
+                                    bg={msg.user === 'user' ? 'teal.500' : 'gray.300'}
+                                    color={msg.user === 'user' ? 'white' : 'black'}
+                                    p={2}
+                                    borderRadius="md"
+                                >
+                                    <Text>{msg.text}</Text>
+                                </Box>
+                            </Stack>
+                        ))}
+                    </Box>
+
+                    <Grid templateColumns="repeat(12, 1fr)" gap={4} mt={4}>
+                        <GridItem colSpan={10}>
+                            <Input
+                                value={input}
+                                onChange={(e) => setInput(e.target.value)}
+                                placeholder="메시지를 입력하세요..."
+                            />
+                        </GridItem>
+                        <GridItem colSpan={2}>
+                            <Button onClick={sendMessage} colorScheme="teal" width="100%">전송</Button>
+                        </GridItem>
+                    </Grid>
+                </Box>
+            </GridItem>
+        </Grid>
     );
 }
 
 export default Assistant;
+
+
