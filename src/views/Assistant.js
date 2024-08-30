@@ -1,33 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { Box, Grid, GridItem, Heading, Input, Button, Text, Stack } from "@chakra-ui/react";
-import { FaBatteryFull, FaDog } from "react-icons/fa";
+import React, { useState } from 'react';
+import { Box, Grid, GridItem, Heading, Input, Button, Text, Stack,Flex } from "@chakra-ui/react";
+import Header from '../global/Header';
+import TimeDisplay from '../global/TimeDisplay';
 
 const Assistant = () => {
-    const [currentTime, setCurrentTime] = useState('');
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
 
-    useEffect(() => {
-        const updateTime = () => {
-            const now = new Date();
-            const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            setCurrentTime(timeString);
-        };
-        const timerId = setInterval(updateTime, 1000);  // 1초마다 시간 업데이트
-
-        // 초기 시간을 설정
-        updateTime();
-
-        // 컴포넌트 언마운트 시 타이머 정리
-        return () => clearInterval(timerId);
-    }, []);
 
     const sendMessage = () => {
         if (input.trim() === '') return;
 
         const newMessage = { user: 'user', text: input };
         setMessages([...messages, newMessage]);
-// API 호출 부분을 주석 처리
+        // API 호출 부분을 주석 처리
         /*
         try {
             const response = await axios.post('https://api.openai.com/v1/engines/davinci-codex/completions', {
@@ -78,23 +64,16 @@ const Assistant = () => {
     return (
         <Grid templateColumns="repeat(12, 1fr)" gap={4} p={4}>
             <GridItem colSpan={12}>
-                <Box display="flex" justifyContent="flex-end" alignItems="center">
-                    <FaBatteryFull style={{ marginRight: '8px' }} />
-                    <Heading as='h4' size='md'>{currentTime}</Heading>
-                </Box>
+                <Flex justifyContent="space-between" alignItems="center">
+                    <Header title="Puppy Doc" />
+                    <TimeDisplay />
+                </Flex>
             </GridItem>
+
             <GridItem colSpan={12}>
-                <Heading as='h2' size='2xl' display="flex" alignItems="center">
-                    <FaDog style={{ marginRight: '8px' }} />
-                    Puppy Doc
+                <Heading as='h4' size='md' p={4}>
+                    AI 수의사
                 </Heading>
-            </GridItem>
-            <GridItem colSpan={12}>
-                <Box p={4}>
-                    <Heading as='h4' size='md'>
-                        AI 수의사
-                    </Heading>
-                </Box>
             </GridItem>
 
             <GridItem colSpan={12}>

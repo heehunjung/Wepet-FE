@@ -1,53 +1,29 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {
     Box,
-    Heading,
     Flex,
-    Image,
+    Divider,
+    Grid,
+    Button,
     VStack,
+    Image,
     SimpleGrid,
-    Text,
+    Heading,
+    FormControl,
     Input,
     Wrap,
-    WrapItem,
-    Button,
-    FormControl,
-    Stack, Divider, CardFooter, ButtonGroup, Card, CardBody, Grid
+    WrapItem
 } from '@chakra-ui/react';
-import { FaDog, FaBatteryFull } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import Header from '../global/Header';
+import TimeDisplay from '../global/TimeDisplay'
 
 const Home = () => {
-    const [currentTime, setCurrentTime] = useState('');
-
-    useEffect(() => {
-        const updateTime = () => {
-            const now = new Date();
-            const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            setCurrentTime(timeString);
-        };
-        const timerId = setInterval(updateTime, 1000);  // 1초마다 시간 업데이트
-
-        // 초기 시간을 설정
-        updateTime();
-
-        // 컴포넌트 언마운트 시 타이머 정리
-        return () => clearInterval(timerId);
-    }, []);
-
     return (
         <Box p={4}>
             <Flex justifyContent="space-between" alignItems="center">
-                <Box>
-                    <Heading as='h2' size='2xl' display="flex" alignItems="center">
-                        <FaDog style={{marginRight: '8px'}}/>
-                        Puppy Doc
-                    </Heading>
-                </Box>
-                <Box display="flex" alignItems="center">
-                    <FaBatteryFull style={{marginRight: '8px'}}/>
-                    <Heading as='h4' size='md'>{currentTime}</Heading>
-                </Box>
+                <Header title="Puppy Doc" />
+                <TimeDisplay />
             </Flex>
 
             <Divider my={4} />
@@ -93,7 +69,7 @@ const Home = () => {
                 </Heading>
                 <SimpleGrid columns={{ base: 1, md: 3 }} spacing={4}>
                     <Box border="1px solid rgba(0, 0, 0, 0.1)" borderRadius="md" p={4}>
-                        <Heading size='s'>Heart Rate </Heading>
+                        <Heading size='s'>Heart Rate</Heading>
                         <Heading as='h4' size='xs'>78 bpm</Heading>
                     </Box>
                     <Box border="1px solid rgba(0, 0, 0, 0.1)" borderRadius="md" p={4}>
@@ -138,78 +114,7 @@ const Home = () => {
                     영양제 추천
                 </Heading>
                 <SimpleGrid columns={{ base: 1, md: 3 }} spacing={4}>
-                    <Card maxW='xs' width="100%">
-                        <CardBody>
-                            <Image
-                                src='https://cdn.ownerclan.com/WfcMwAI7F9Ku5IC0OYnHEGaOpJ8s2Op1e_z84alAeqk/marketize/auto/as/v1.jpg'
-                                alt='Green double couch with wooden legs'
-                                borderRadius='xs'
-                            />
-                            <Stack mt='4' spacing='2'>
-                                <Heading size='sm'>피모영양제</Heading>
-                                <Text fontSize='sm'>
-                                    피부병
-                                </Text>
-                                <Text color='blue.600' fontSize='lg'>
-                                    48,320 원
-                                </Text>
-                            </Stack>
-                        </CardBody>
-                        <Divider />
-                        <CardFooter>
-                            <Button variant='solid' colorScheme='blue' size='sm'>
-                                구매
-                            </Button>
-                        </CardFooter>
-                    </Card>
-                    <Card maxW='xs' width="100%">
-                        <CardBody>
-                            <Image
-                                src='https://bff-images.bemypet.kr/media/medias/product/473-fafedbf95ee62e50b6afa288625ba21f5696c5e4b740ad5d58819ed2c8c3.jpg'
-                                alt='Green double couch with wooden legs'
-                                borderRadius='xs'
-                            />
-                            <Stack mt='4' spacing='2'>
-                                <Heading size='sm'>침향 심장 튼튼</Heading>
-                                <Text fontSize='sm'>
-                                    심장병
-                                </Text>
-                                <Text color='blue.600' fontSize='lg'>
-                                    30,000원
-                                </Text>
-                            </Stack>
-                        </CardBody>
-                        <Divider />
-                        <CardFooter>
-                            <Button variant='solid' colorScheme='blue' size='sm'>
-                                구매
-                            </Button>
-                        </CardFooter>
-                    </Card>
-                    <Card maxW='xs' width="100%">
-                        <CardBody>
-                            <Image
-                                src='https://img.dogpre.com/mobile/dogpre/product/85/84980_detail_04511455.jpg'
-                                alt='Green double couch with wooden legs'
-                                borderRadius='xs'
-                            />
-                            <Stack mt='4' spacing='2'>
-                                <Heading size='sm'>멍냥이랑 덴탈스타</Heading>
-                                <Text fontSize='sm'>
-                                    구강 영양제
-                                </Text>
-                                <Text color='blue.600' fontSize='lg'>
-                                    12,500원
-                                </Text>
-                            </Stack>
-                        </CardBody>
-                        <Divider />
-                        <CardFooter>
-                            <Button variant='solid' colorScheme='blue' size='sm'>
-                                구매
-                            </Button>
-                        </CardFooter>
-                    </Card>
+                    {/* Example of Card Component */}
                 </SimpleGrid>
             </Box>
 
