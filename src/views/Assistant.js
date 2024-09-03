@@ -1,9 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Grid, GridItem, Heading, Input, Button, Text, Stack,Flex } from "@chakra-ui/react";
 import Header from '../global/Header';
 import TimeDisplay from '../global/TimeDisplay';
 
 const Assistant = () => {
+    useEffect(() => {
+        const script1 = document.createElement("script");
+        script1.src = "https://cdn.botpress.cloud/webchat/v2.1/inject.js";
+        
+        script1.async = true;
+        document.body.appendChild(script1);
+
+        const script2 = document.createElement("script");
+        script2.src = "https://mediafiles.botpress.cloud/d206594d-b69d-4b62-ae01-ddf2ddb16cce/webchat/v2.1/config.js";
+        script2.async = true;
+        document.body.appendChild(script2);
+
+        return () => {
+            document.body.removeChild(script1);
+            document.body.removeChild(script2);
+        };
+    }, []);
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
 
@@ -13,28 +30,7 @@ const Assistant = () => {
 
         const newMessage = { user: 'user', text: input };
         setMessages([...messages, newMessage]);
-        // API 호출 부분을 주석 처리
-        /*
-        try {
-            const response = await axios.post('https://api.openai.com/v1/engines/davinci-codex/completions', {
-                prompt: input,
-                max_tokens: 150,
-                n: 1,
-                stop: null,
-                temperature: 0.5,
-            }, {
-                headers: {
-                    'Authorization': `Bearer YOUR_OPENAI_API_KEY`,
-                    'Content-Type': 'application/json'
-                }
-            });
 
-            const gptMessage = { user: 'gpt', text: response.data.choices[0].text.trim() };
-            setMessages([...messages, newMessage, gptMessage]);
-        } catch (error) {
-            console.error("Error calling OpenAI API", error);
-        }
-        */
         // 현재는 보고서를 위해 저장된 데이터 출력
         const gptMessage = {
             user: 'gpt',
@@ -110,7 +106,16 @@ const Assistant = () => {
         </Grid>
     );
 }
-
 export default Assistant;
+// import React from 'react'
+// import Chatbot from '../global/Chatbot'
 
+// const Assistant = () => {
+//   return (
+//     <div>
+//       <Chatbot />
+//     </div>
+//   )
+// }
 
+// export default Assistant;
