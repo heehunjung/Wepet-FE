@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Heading } from "@chakra-ui/react";
 import { FaBatteryFull } from "react-icons/fa";
+import "../style/App.css";
 
 const TimeDisplay = () => {
     const [currentTime, setCurrentTime] = useState('');
