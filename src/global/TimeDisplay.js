@@ -1,7 +1,8 @@
 // Common/TimeDisplay.js (새 파일)
 import React, { useState, useEffect } from 'react';
 import { Heading } from "@chakra-ui/react";
-import { FaBatteryFull } from "react-icons/fa";
+import BatteryStatus  from "./BatteryStatus";
+import "../style/App.css";
 
 const TimeDisplay = () => {
     const [currentTime, setCurrentTime] = useState('');
@@ -21,7 +22,7 @@ const TimeDisplay = () => {
 
     return (
         <div style={{ display: 'flex', alignItems: 'center' }}>
-            <FaBatteryFull style={{ marginRight: '8px' }} />
+            {/* <BatteryStatus style={{ marginRight: '8px' }} /> */}
             <Heading as='h4' size='md'>{currentTime}</Heading>
         </div>
     );

@@ -22,7 +22,7 @@ const Home = () => {
     return (
         <Box p={4}>
             <Flex justifyContent="space-between" alignItems="center">
-                <Header title="Puppy Doc" />
+                <Header title=" Puppy Doc" />
                 <TimeDisplay />
             </Flex>
 
