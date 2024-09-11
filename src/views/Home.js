@@ -45,22 +45,24 @@ const Home = () => {
                         </VStack>
                     </Button>
                 </Link>
-                <Button colorScheme='teal' variant='ghost' width="100%" height="100%">
-                    <VStack spacing={1}>
-                        <Box boxSize="100px" borderRadius="full" overflow="hidden">
-                            <Image src="./icons/hospital-icon.webp" boxSize="100px"/>
-                        </Box>
-                        <Heading as='h4' size='xs'>Hospital</Heading>
-                    </VStack>
-                </Button>
-                <Button colorScheme='teal' variant='ghost' width="100%" height="100%">
-                    <VStack spacing={1}>
-                        <Box boxSize="100px" borderRadius="full" overflow="hidden">
-                            <Image src="./icons/metric-icon.webp" boxSize="100px"/>
-                        </Box>
-                        <Heading as='h4' size='xs'>Health Metrics</Heading>
-                    </VStack>
-                </Button>
+                <Link to="/Hospital">
+                    <Button colorScheme='teal' variant='ghost' width="100%" height="100%">
+                        <VStack spacing={1}>
+                            <Box boxSize="100px" borderRadius="full" overflow="hidden">
+                                <Image src="./icons/hospital-icon.webp" boxSize="100px"/>
+                            </Box>
+                            <Heading as='h4' size='xs'>Hospital</Heading>
+                        </VStack>
+                    </Button>
+                </Link>
+                    <Button colorScheme='teal' variant='ghost' width="100%" height="100%">
+                        <VStack spacing={1}>
+                            <Box boxSize="100px" borderRadius="full" overflow="hidden">
+                                <Image src="./icons/metric-icon.webp" boxSize="100px"/>
+                            </Box>
+                            <Heading as='h4' size='xs'>Health Metrics</Heading>
+                        </VStack>
+                    </Button>
             </Grid>
 
             <Box mb={6}>

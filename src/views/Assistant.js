@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Grid, GridItem, Heading, Input, Button, Text, Stack, Flex } from "@chakra-ui/react";
+import { Box, Grid, GridItem, Heading, Input, Button, Text, Stack, Flex,Divider } from "@chakra-ui/react";
 import Header from '../global/Header';
 import TimeDisplay from '../global/TimeDisplay';
 
@@ -67,13 +67,12 @@ const Assistant = () => {
                     <TimeDisplay />
                 </Flex>
             </GridItem>
-
+            <Divider my={4} />
             <GridItem colSpan={12}>
                 <Heading as='h4' size='md' p={4}>
                     AI 수의사
                 </Heading>
             </GridItem>
-
             <GridItem colSpan={12}>
                 <Box border="1px solid #ccc" borderRadius="md" p={4}>
                     <Box h="300px" overflowY="auto" p={4} border="1px solid #ccc" borderRadius="md">
