@@ -1,60 +1,62 @@
-import React, { useState, useEffect } from 'react';
-import { Box, Grid, GridItem, Heading, Input, Button, Text, Stack,Flex } from "@chakra-ui/react";
+import React, { useState } from 'react';
+import { Box, Grid, GridItem, Heading, Input, Button, Text, Stack, Flex,Divider } from "@chakra-ui/react";
 import Header from '../global/Header';
 import TimeDisplay from '../global/TimeDisplay';
 
 const Assistant = () => {
-    useEffect(() => {
-        const script1 = document.createElement("script");
-        script1.src = "https://cdn.botpress.cloud/webchat/v2.1/inject.js";
-        
-        script1.async = true;
-        document.body.appendChild(script1);
-
-        const script2 = document.createElement("script");
-        script2.src = "https://mediafiles.botpress.cloud/d206594d-b69d-4b62-ae01-ddf2ddb16cce/webchat/v2.1/config.js";
-        script2.async = true;
-        document.body.appendChild(script2);
-
-        return () => {
-            document.body.removeChild(script1);
-            document.body.removeChild(script2);
-        };
-    }, []);
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
 
+    // OpenAI API 키는 환경 변수에 저장
+    const apiKey = process.env.REACT_APP_OPENAI_API_KEY;
+    const apiEndpoint = 'https://api.openai.com/v1/chat/completions';
 
-    const sendMessage = () => {
+    // OpenAI API 호출 함수
+    const fetchAIResponse = async (prompt) => {
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${apiKey}`
+            },
+            body: JSON.stringify({
+                model: "gpt-4",
+                messages: [{ role: "user", content: prompt }],
+                temperature: 0.8,
+                max_tokens: 1024,
+                top_p: 1,
+                frequency_penalty: 0.5,
+                presence_penalty: 0.5
+            })
+        };
+
+        try {
+            const response = await fetch(apiEndpoint, requestOptions);
+            const data = await response.json();
+            return data.choices[0].message.content;
+        } catch (error) {
+            console.error('OpenAI API 호출 중 오류 발생:', error);
+            return 'API 호출 중 오류가 발생했습니다.';
+        }
+    };
+
+    // 메시지 전송 및 처리 함수
+    const sendMessage = async () => {
         if (input.trim() === '') return;
 
+        // 사용자 메시지를 즉시 업데이트
         const newMessage = { user: 'user', text: input };
-        setMessages([...messages, newMessage]);
+        setMessages((prevMessages) => [...prevMessages, newMessage]);
+        
+        setInput('');  // 입력 필드 비우기
 
-        // 현재는 보고서를 위해 저장된 데이터 출력
-        const gptMessage = {
-            user: 'gpt',
-            text: '강아지의 눈 건강을 위해 추천되는 영양제는 다음과 같습니다:\n' +
-                '\n' +
-                '추천되는 제품들:\n' +
-                '\n' +
-                'VetriScience Canine Plus Senior:\n' +
-                '\n' +
-                '오메가-3 지방산, 비타민 A, 비타민 C, 비타민 E, 루테인, 제아잔틴 등 다양한 영양소를 포함하고 있습니다.\n' +
-                'Zesty Paws Omega Bites:\n' +
-                '\n' +
-                '연어 오일 및 오메가-3 지방산을 포함하고 있어 눈 건강뿐만 아니라 피부와 코트 건강에도 도움이 됩니다.\n' +
-                'Nutri-Vet Eye Health Supplement for Dogs:\n' +
-                '\n' +
-                '루테인, 베타카로틴, 비타민 C, 비타민 E 등을 포함한 눈 건강을 위한 종합 영양제입니다.\n' +
-                'Ocu-GLO Rx:\n' +
-                '\n' +
-                '루테인, 제아잔틴, 오메가-3 지방산 등을 포함한 눈 건강 전문 영양제입니다.\n' +
-                '이러한 영양제를 선택할 때는 강아지의 특정 필요와 현재 건강 상태를 고려하는 것이 중요합니다. 또한, 새로운 영양제를 시작하기 전에 수의사와 상담하여 안전성과 적절한 용량을 확인하는 것이 좋습니다'
-        };
-        setMessages([...messages, newMessage, gptMessage]);
+        // ChatGPT API에 메시지를 보내고 응답 받기
+        const gptResponse = await fetchAIResponse(input);
 
-        setInput('');
+        const gptMessage = { user: 'gpt', text: gptResponse };
+
+        // GPT의 응답을 나중에 업데이트
+        setMessages((prevMessages) => [...prevMessages, gptMessage]);
     };
 
     return (
@@ -65,13 +67,12 @@ const Assistant = () => {
                     <TimeDisplay />
                 </Flex>
             </GridItem>
-
+            <Divider my={4} />
             <GridItem colSpan={12}>
                 <Heading as='h4' size='md' p={4}>
                     AI 수의사
                 </Heading>
             </GridItem>
-
             <GridItem colSpan={12}>
                 <Box border="1px solid #ccc" borderRadius="md" p={4}>
                     <Box h="300px" overflowY="auto" p={4} border="1px solid #ccc" borderRadius="md">
@@ -106,16 +107,5 @@ const Assistant = () => {
         </Grid>
     );
 }
+
 export default Assistant;
-// import React from 'react'
-// import Chatbot from '../global/Chatbot'
-
-// const Assistant = () => {
-//   return (
-//     <div>
-//       <Chatbot />
-//     </div>
-//   )
-// }
-
-// export default Assistant;

@@ -6,16 +6,18 @@ import theme from './style/theme';
 
 import Home from './views/Home';
 import Assistant from './views/Assistant';
+import Hospital from './views/Hospital';
 
 function App() {
   return (
     <ChakraProvider theme={theme}>
       <Routes>
         <Route path ="/" element={<Home />} />
+        <Route path ="/Home" element={<Home />} />
+        <Route path ="/Hospital" element={<Hospital/>}/>
         <Route path ="/assistant" element={<Assistant />} />
       </Routes>
     </ChakraProvider>
-
   );
 }
 
