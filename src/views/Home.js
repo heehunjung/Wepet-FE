@@ -1,3 +1,4 @@
+// home 화면 
 import React from 'react';
 import {
     Box,
@@ -55,14 +56,16 @@ const Home = () => {
                         </VStack>
                     </Button>
                 </Link>
+                <Link to= "/Supplement">
                     <Button colorScheme='teal' variant='ghost' width="100%" height="100%">
                         <VStack spacing={1}>
                             <Box boxSize="100px" borderRadius="full" overflow="hidden">
                                 <Image src="./icons/metric-icon.webp" boxSize="100px"/>
                             </Box>
-                            <Heading as='h4' size='xs'>Health Metrics</Heading>
+                            <Heading as='h4' size='xs'>Supplement</Heading>
                         </VStack>
                     </Button>
+                </Link>
             </Grid>
 
             <Box mb={6}>
@@ -103,13 +106,16 @@ const Home = () => {
                         <Button colorScheme='gray'>수의사 연결</Button>
                     </WrapItem>
                     <WrapItem>
-                        <Button colorScheme='gray'>영양제 처방</Button>
-                    </WrapItem>
-                    <WrapItem>
                         <Button colorScheme='gray'>응급 전화</Button>
                     </WrapItem>
-                </Wrap>
-            </Box>
+                    <Link to="/Supplement">
+                        <WrapItem>
+                            <Button colorScheme='gray'>영양제 처방</Button>
+                    </WrapItem>
+        </Link>  {/* 닫는 태그 수정 */}
+    </Wrap>
+</Box>
+
 
             <Box mb={6}>
                 <Heading as='h4' size='md' mb={4}>

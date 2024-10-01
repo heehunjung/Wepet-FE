@@ -1,18 +1,11 @@
+//동물 병원 지도 페이지
 import React from 'react';
 import {
     Box,
     Flex,
     Divider,
     GridItem,
-    Button,
-    VStack,
-    Image,
-    SimpleGrid,
     Heading,
-    FormControl,
-    Input,
-    Wrap,
-    WrapItem
 } from '@chakra-ui/react';
 import Header from '../global/Header';
 import TimeDisplay from '../global/TimeDisplay'

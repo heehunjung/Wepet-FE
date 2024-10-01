@@ -7,7 +7,7 @@ import theme from './style/theme';
 import Home from './views/Home';
 import Assistant from './views/Assistant';
 import Hospital from './views/Hospital';
-
+import Supplement from './views/Supplement';
 function App() {
   return (
     <ChakraProvider theme={theme}>
@@ -16,6 +16,8 @@ function App() {
         <Route path ="/Home" element={<Home />} />
         <Route path ="/Hospital" element={<Hospital/>}/>
         <Route path ="/assistant" element={<Assistant />} />
+        <Route path ="/supplement" element={<Supplement />} />
+
       </Routes>
     </ChakraProvider>
   );
