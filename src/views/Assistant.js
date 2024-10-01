@@ -1,11 +1,16 @@
-import React, { useState } from 'react';
-import { Box, Grid, GridItem, Heading, Input, Button, Text, Stack, Flex,Divider } from "@chakra-ui/react";
+import React, { useState, useEffect } from 'react';
+import { Box, Grid, GridItem, Heading, Input, Button, Text, Stack, Flex, Divider } from "@chakra-ui/react";
+import { useLocation } from 'react-router-dom';  // 데이터 수신을 위한 useLocation 훅 사용
 import Header from '../global/Header';
 import TimeDisplay from '../global/TimeDisplay';
 
 const Assistant = () => {
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
+
+    // useLocation 훅을 사용하여 전달된 데이터를 가져옴
+    const location = useLocation();
+    const { species, age, condition } = location.state || {};
 
     // OpenAI API 키는 환경 변수에 저장
     const apiKey = process.env.REACT_APP_OPENAI_API_KEY;
@@ -40,22 +45,32 @@ const Assistant = () => {
         }
     };
 
+    // 컴포넌트가 마운트될 때 전달된 데이터가 있으면 질문 생성 후 메시지 전송
+    useEffect(() => {
+        if (species && age && condition) {
+            const initialMessage = `내 애완동물은 ${species}이고, 나이는 ${age}살이며 현재 상태는 ${condition}입니다. 이런 상황에서 어떻게 하면 좋을까요?`;
+            setMessages([{ user: 'user', text: initialMessage }]);
+            // AI에게 자동으로 질문 전송
+            sendMessage(initialMessage);
+        }
+    }, [species, age, condition]);
+
     // 메시지 전송 및 처리 함수
-    const sendMessage = async () => {
-        if (input.trim() === '') return;
+    const sendMessage = async (message = input) => {
+        if (message.trim() === '') return;
 
         // 사용자 메시지를 즉시 업데이트
-        const newMessage = { user: 'user', text: input };
+        const newMessage = { user: 'user', text: message };
         setMessages((prevMessages) => [...prevMessages, newMessage]);
-        
+
         setInput('');  // 입력 필드 비우기
 
         // ChatGPT API에 메시지를 보내고 응답 받기
-        const gptResponse = await fetchAIResponse(input);
+        const gptResponse = await fetchAIResponse(message);
 
         const gptMessage = { user: 'gpt', text: gptResponse };
 
-        // GPT의 응답을 나중에 업데이트
+        // GPT의 응답을 업데이트
         setMessages((prevMessages) => [...prevMessages, gptMessage]);
     };
 
@@ -99,13 +114,13 @@ const Assistant = () => {
                             />
                         </GridItem>
                         <GridItem colSpan={2}>
-                            <Button onClick={sendMessage} colorScheme="teal" width="100%">전송</Button>
+                            <Button onClick={() => sendMessage()} colorScheme="teal" width="100%">전송</Button>
                         </GridItem>
                     </Grid>
                 </Box>
             </GridItem>
         </Grid>
     );
-}
+};
 
 export default Assistant;
