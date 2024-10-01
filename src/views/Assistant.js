@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Grid, GridItem, Heading, Input, Button, Text, Stack, Flex, Divider } from "@chakra-ui/react";
-import { useLocation } from 'react-router-dom';  // 데이터 수신을 위한 useLocation 훅 사용
+import { useLocation } from 'react-router-dom';
 import Header from '../global/Header';
 import TimeDisplay from '../global/TimeDisplay';
 
 const Assistant = () => {
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
+    const [loading, setLoading] = useState(false); // 로딩 상태 추가
 
-    // useLocation 훅을 사용하여 전달된 데이터를 가져옴
     const location = useLocation();
     const { species, age, condition } = location.state || {};
 
-    // OpenAI API 키는 환경 변수에 저장
     const apiKey = process.env.REACT_APP_OPENAI_API_KEY;
     const apiEndpoint = 'https://api.openai.com/v1/chat/completions';
 
     // OpenAI API 호출 함수
     const fetchAIResponse = async (prompt) => {
+        setLoading(true); // 로딩 시작
         const requestOptions = {
             method: 'POST',
             headers: {
@@ -38,21 +38,33 @@ const Assistant = () => {
         try {
             const response = await fetch(apiEndpoint, requestOptions);
             const data = await response.json();
+            setLoading(false); // 로딩 끝
             return data.choices[0].message.content;
         } catch (error) {
             console.error('OpenAI API 호출 중 오류 발생:', error);
+            setLoading(false); // 로딩 끝
             return 'API 호출 중 오류가 발생했습니다.';
         }
     };
 
     // 컴포넌트가 마운트될 때 전달된 데이터가 있으면 질문 생성 후 메시지 전송
     useEffect(() => {
-        if (species && age && condition) {
-            const initialMessage = `내 애완동물은 ${species}이고, 나이는 ${age}살이며 현재 상태는 ${condition}입니다. 이런 상황에서 어떻게 하면 좋을까요?`;
-            setMessages([{ user: 'user', text: initialMessage }]);
-            // AI에게 자동으로 질문 전송
-            sendMessage(initialMessage);
-        }
+        const sendInitialMessage = async () => {
+            if (species && age && condition) {
+                const initialMessage = `내 애완동물은 ${species}이고, 나이는 ${age}살이며 현재 상태는 ${condition}입니다. 이런 상황에서 어떻게 하면 좋을까요?`;
+
+                // 사용자 메시지 업데이트 (한 번만)
+                setMessages([{ user: 'user', text: initialMessage }]);
+
+                // AI 응답 받기
+                const gptResponse = await fetchAIResponse(initialMessage);
+
+                // AI 메시지 업데이트
+                setMessages((prevMessages) => [...prevMessages, { user: 'gpt', text: gptResponse }]);
+            }
+        };
+
+        sendInitialMessage();
     }, [species, age, condition]);
 
     // 메시지 전송 및 처리 함수
@@ -74,6 +86,9 @@ const Assistant = () => {
         setMessages((prevMessages) => [...prevMessages, gptMessage]);
     };
 
+    // 페이지 제목을 조건에 따라 동적으로 변경
+    const pageTitle = species && age && condition ? "영양제 추천" : "AI 수의사";
+
     return (
         <Grid templateColumns="repeat(12, 1fr)" gap={4} p={4}>
             <GridItem colSpan={12}>
@@ -85,7 +100,7 @@ const Assistant = () => {
             <Divider my={4} />
             <GridItem colSpan={12}>
                 <Heading as='h4' size='md' p={4}>
-                    AI 수의사
+                    {pageTitle} {/* 페이지 제목을 동적으로 렌더링 */}
                 </Heading>
             </GridItem>
             <GridItem colSpan={12}>
@@ -103,6 +118,9 @@ const Assistant = () => {
                                 </Box>
                             </Stack>
                         ))}
+                        {loading && (
+                            <Text color="gray.500">응답을 기다리는 중...</Text> // 로딩 상태 표시
+                        )}
                     </Box>
 
                     <Grid templateColumns="repeat(12, 1fr)" gap={4} mt={4}>
@@ -114,7 +132,9 @@ const Assistant = () => {
                             />
                         </GridItem>
                         <GridItem colSpan={2}>
-                            <Button onClick={() => sendMessage()} colorScheme="teal" width="100%">전송</Button>
+                            <Button onClick={() => sendMessage()} colorScheme="teal" width="100%" isDisabled={loading}>
+                                {loading ? "전송 중..." : "전송"}
+                            </Button>
                         </GridItem>
                     </Grid>
                 </Box>
