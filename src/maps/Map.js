@@ -1,15 +1,23 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { NavermapsProvider } from 'react-naver-maps';
 import MyMap from './MyMap';
+import { getHospitals } from '../global/hospitalService'; // 병원 정보 가져오기
 
 function Map() {
   const ncpClientId = process.env.REACT_APP_NCP_ClientId;
-  // 환경 변수가 잘 찍히는지 콘솔에 로그 출력
-  console.log("Naver Map Client ID:", ncpClientId);
+  const [hospitals, setHospitals] = useState([]);
+
+  useEffect(() => {
+    // 병원 정보 가져오기
+    getHospitals()
+      .then((data) => setHospitals(data))
+      .catch((error) => console.error(error));
+  }, []);
+
   return (
     <NavermapsProvider ncpClientId={ncpClientId}>
       <Suspense fallback={<div>Loading map...</div>}>
-        <MyMap />
+        <MyMap hospitals={hospitals} /> {/* 병원 데이터를 MyMap에 전달 */}
       </Suspense>
     </NavermapsProvider>
   );
