@@ -1,0 +1,12 @@
+@font-face {
+    font-family: "SEBANG-Gothic";
+    font-weight: normal;
+    src: url("../assets/font/SEBANG-Gothic.otf") format("opentype");
+  }
+  
+  * {
+    margin: 0px;
+    padding: 0px;
+    font-family: "SEBANG-Gothic";
+    z-index: 1;
+  }
