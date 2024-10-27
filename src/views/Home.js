@@ -17,13 +17,14 @@ import {
 } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import Header from '../global/Header';
-import TimeDisplay from '../global/TimeDisplay'
+import TimeDisplay from '../global/TimeDisplay';
+import EmergencyCall from '../global/Emergencycall';
 
 const Home = () => {
     return (
         <Box p={4}>
             <Flex justifyContent="space-between" alignItems="center">
-                <Header title=" Puppy Doc" />
+                <Header title="Puppy Doc" />
                 <TimeDisplay />
             </Flex>
 
@@ -50,17 +51,17 @@ const Home = () => {
                     <Button colorScheme='teal' variant='ghost' width="100%" height="100%">
                         <VStack spacing={1}>
                             <Box boxSize="100px" borderRadius="full" overflow="hidden">
-                                <Image src="./icons/hospital-icon.webp" boxSize="100px"/>
+                                <Image src="./icons/hospital-icon.webp" boxSize="100px" />
                             </Box>
                             <Heading as='h4' size='xs'>Hospital</Heading>
                         </VStack>
                     </Button>
                 </Link>
-                <Link to= "/Supplement">
+                <Link to="/Supplement">
                     <Button colorScheme='teal' variant='ghost' width="100%" height="100%">
                         <VStack spacing={1}>
                             <Box boxSize="100px" borderRadius="full" overflow="hidden">
-                                <Image src="./icons/metric-icon.webp" boxSize="100px"/>
+                                <Image src="./icons/metric-icon.webp" boxSize="100px" />
                             </Box>
                             <Heading as='h4' size='xs'>Supplement</Heading>
                         </VStack>
@@ -68,6 +69,7 @@ const Home = () => {
                 </Link>
             </Grid>
 
+            
             <Box mb={6}>
                 <Heading as='h4' size='md' mb={4}>
                     실시간 건강 데이터
@@ -103,19 +105,21 @@ const Home = () => {
                 </Heading>
                 <Wrap spacing={2}>
                     <WrapItem>
-                        <Button colorScheme='gray'>수의사 연결</Button>
+                    <Button colorScheme='gray'>수의사 연결</Button>
                     </WrapItem>
                     <WrapItem>
-                        <Button colorScheme='gray'>응급 전화</Button>
+                        {/* 응급 전화 버튼 클릭 시 새로운 창으로 이동 */}
+                        <Link to="/Emergencycall">
+                            <Button colorScheme='gray'>응급 전화</Button>
+                        </Link>
                     </WrapItem>
                     <Link to="/Supplement">
                         <WrapItem>
                             <Button colorScheme='gray'>영양제 처방</Button>
-                    </WrapItem>
-        </Link>  {/* 닫는 태그 수정 */}
-    </Wrap>
-</Box>
-
+                        </WrapItem>
+                    </Link>
+                </Wrap>
+            </Box>
 
             <Box mb={6}>
                 <Heading as='h4' size='md' mb={4}>
