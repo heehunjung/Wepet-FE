@@ -51,7 +51,7 @@ const Assistant = () => {
     useEffect(() => {
         const sendInitialMessage = async () => {
             if (species && age && condition) {
-                const initialMessage = `내 애완동물은 ${species}이고, 나이는 ${age}살이며 현재 상태는 ${condition}입니다. 이런 상황에서 어떻게 하면 좋을까요?`;
+                const initialMessage = `반려동물은 ${species}이고, 나이는 ${age}살이며 현재 상태는 "${condition}" 야. 이런 상황에서 어떤 영양제를 먹으면 좋을까?`;
 
                 // 사용자 메시지 업데이트 (한 번만)
                 setMessages([{ user: 'user', text: initialMessage }]);
@@ -128,6 +128,11 @@ const Assistant = () => {
                             <Input
                                 value={input}
                                 onChange={(e) => setInput(e.target.value)}
+                                onKeyPress={(e) => { // 여기에 추가
+                                    if (e.key === 'Enter' && !loading) { // 엔터 키가 눌리고 로딩 중이 아닐 때
+                                        sendMessage(); // 메시지 전송 함수 호출
+                                    }
+                                }}
                                 placeholder="메시지를 입력하세요..."
                             />
                         </GridItem>
