@@ -1,22 +1,18 @@
 import React from "react";
 import { Webchat, WebchatProvider, getClient } from "@botpress/webchat";
 import { buildTheme } from "@botpress/webchat-generator";
+import Header from '../global/Header';
+import TimeDisplay from '../global/TimeDisplay';
 import "../style/App.css";
 
 // 사용자 정의 테마 설정
 const { theme, style } = buildTheme({
-  themeName: "custom",
-  themeColor: "#123456", // 원하는 색상 코드로 변경
-  botMessageColor: "#634433", // 봇 메시지 색상
-  userMessageColor: "#123abc", // 사용자 메시지 색상
-  backgroundColor: "#f4f4f9", // 웹채팅 배경 색상
+
   botMessageBubble: {
-    borderRadius: "12px",
-    color: "#ffffff"
+    borderRadius: "12px"
   },
   userMessageBubble: {
-    borderRadius: "12px",
-    color: "#ffffff"
+    borderRadius: "12px"
   }
 });
 
@@ -28,13 +24,20 @@ const Chatbot = () => {
   const client = getClient({ clientId, botId });
 
   return (
-    <div style={{ width: "100vw", height: "100vh" }}>
-      {/* 사용자 정의 스타일 적용 */}
-      <style>{style}</style>
-      <WebchatProvider theme={theme} client={client}>
-        {/* Webchat 컴포넌트를 항상 열려 있도록 설정 */}
-        <Webchat />
-      </WebchatProvider>
+    <div style={{ width: "100vw", height: "100vh", display: "flex", flexDirection: "column" }}>
+      {/* 헤더와 타임디스플레이 추가 */}
+      <div style={{ display: "flex", justifyContent: "space-between", padding: "10px", backgroundColor: "#123456", color: "#ffffff" }}>
+        <Header title="Puppy Doc" />
+        <TimeDisplay />
+      </div>
+
+      <div style={{ flex: 0.5 }}>
+        {/* 사용자 정의 스타일 적용 */}
+        <style>{style}</style>
+        <WebchatProvider theme={theme} client={client}>
+          <Webchat />
+        </WebchatProvider>
+      </div>
     </div>
   );
 };
