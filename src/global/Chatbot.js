@@ -1,31 +1,52 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Webchat, WebchatProvider, Fab, getClient } from "@botpress/webchat";
+import { buildTheme } from "@botpress/webchat-generator";
 import "../style/App.css";
-const Chatbot = () => {
-  useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://cdn.botpress.cloud/webchat/v2.1/inject.js';
-    script.async = true;
-    document.body.appendChild(script);
 
-    script.onload = () => {
-      if (window.botpressWebChat && typeof window.botpressWebChat.init === 'function') {
-        window.botpressWebChat.init({
-          botId: 'd206594d-b69d-4b62-ae01-ddf2ddb16cce',  // 올바른 botId로 대체
-          hostUrl: 'https://cdn.botpress.cloud/webchat/v2.1',
-          messagingUrl: 'https://messaging.botpress.cloud',
-          clientId: 'your-client-id',  // 올바른 clientId로 대체
-        });
-      } else {
-        console.error("Botpress WebChat is not initialized properly.");
+// Botpress Webchat 설정
+const { theme, style } = buildTheme({
+  themeName: "prism",
+  themeColor: "#2563eb", // Webchat 색상
+});
+
+// Add your Client ID here ⬇️
+const clientId = "fd6baa55-c1a2-45be-a5bb-630ae7406434"; // Botpress Client ID
+
+export default function Chatbot() {
+  const client = getClient({ clientId });
+  const [isWebchatOpen, setIsWebchatOpen] = useState(false);
+  const [isConnected, setIsConnected] = useState(false);
+
+  useEffect(() => {
+    const connectClient = async () => {
+      try {
+        await client.connect(); // 클라이언트 연결
+        setIsConnected(true);  // 연결 성공 시 상태 업데이트
+      } catch (error) {
+        console.error("Botpress 클라이언트 연결 실패:", error);
       }
     };
+    connectClient();
 
-    script.onerror = () => {
-      console.error("Failed to load the Botpress WebChat script.");
+    return () => {
+      client.disconnect(); // 컴포넌트가 언마운트될 때 클라이언트 연결 해제
     };
-  }, []);
+  }, [client]);
 
-  return <div id="webchat" />;
+  const toggleWebchat = () => {
+    setIsWebchatOpen((prevState) => !prevState);
+  };
+
+  return (
+    <div style={{ width: "100vw", height: "100vh" }}>
+      <style>{style}</style>
+      <WebchatProvider theme={theme} client={client}>
+        <Fab onClick={toggleWebchat} />
+        <div style={{ display: isWebchatOpen && isConnected ? "block" : "none" }}>
+          <Webchat />
+        </div>
+      </WebchatProvider>
+      {!isConnected && <p>연결 중...</p>}
+    </div>
+  );
 }
-
-export default Chatbot;

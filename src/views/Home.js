@@ -1,4 +1,3 @@
-// home 화면 
 import React from 'react';
 import {
     Box,
@@ -15,15 +14,22 @@ import {
     Wrap,
     WrapItem
 } from '@chakra-ui/react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Header from '../global/Header';
 import TimeDisplay from '../global/TimeDisplay'
 
 const Home = () => {
+    const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate 훅 추가
+
+    const handleVetConnect = () => {
+        // 수의사 연결 버튼 클릭 시 Assistant 페이지로 이동
+        navigate('/assistant');
+    };
+
     return (
         <Box p={4}>
             <Flex justifyContent="space-between" alignItems="center">
-                <Header title=" Puppy Doc" />
+                <Header title="Puppy Doc" />
                 <TimeDisplay />
             </Flex>
 
@@ -103,7 +109,7 @@ const Home = () => {
                 </Heading>
                 <Wrap spacing={2}>
                     <WrapItem>
-                        <Button colorScheme='gray'>수의사 연결</Button>
+                        <Button colorScheme='gray' onClick={handleVetConnect}>수의사 연결</Button>
                     </WrapItem>
                     <WrapItem>
                         <Button colorScheme='gray'>응급 전화</Button>
@@ -112,10 +118,9 @@ const Home = () => {
                         <WrapItem>
                             <Button colorScheme='gray'>영양제 처방</Button>
                     </WrapItem>
-        </Link>  {/* 닫는 태그 수정 */}
-    </Wrap>
-</Box>
-
+                    </Link>
+                </Wrap>
+            </Box>
 
             <Box mb={6}>
                 <Heading as='h4' size='md' mb={4}>
