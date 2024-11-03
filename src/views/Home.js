@@ -96,15 +96,6 @@ const Home = () => {
 
             <Box mb={6}>
                 <Heading as='h4' size='md' mb={4}>
-                    AI 수의사
-                </Heading>
-                <FormControl isRequired>
-                    <Input placeholder='내용을 입력하세요.' width="50%"/>
-                </FormControl>
-            </Box>
-
-            <Box mb={6}>
-                <Heading as='h4' size='md' mb={4}>
                     긴급 동작
                 </Heading>
                 <Wrap spacing={2}>
