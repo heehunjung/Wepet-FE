@@ -12,7 +12,7 @@ import TimeDisplay from '../global/TimeDisplay'
 import Map from '../maps/Map'
 
 const Hospital = () => {
-    return (
+    return (    
         <Box p ={4}>
             <Flex justifyContent="space-between" alignItems="center">
                 <Header title=" Puppy Doc" />
