@@ -14,7 +14,7 @@ const { theme, style } = buildTheme({
 });
 
 // Botpress Client ID 설정
-const clientId = "fd6baa55-c1a2-45be-a5bb-630ae7406434";
+const clientId = process.env.REACT_APP_CLIENT_ID;
 
 const Assistant = () => {
     const client = getClient({ clientId });
